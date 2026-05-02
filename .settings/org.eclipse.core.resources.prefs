@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/assessment.jsp=UTF-8
+encoding//src/main/webapp/assignment_detail.jsp=UTF-8
+encoding//src/main/webapp/submitAssessment.jsp=UTF-8
 encoding/<project>=UTF-8

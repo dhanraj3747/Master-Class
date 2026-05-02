@@ -1,0 +1,33 @@
+/* PREMIUM LIGHT THEME */
+body { background: #f8fafc; font-family: 'Segoe UI', sans-serif; padding: 40px; }
+.container { max-width: 1200px; margin: 0 auto; }
+.page-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 30px; color: #0f172a; }
+
+.card-grid { display: flex; flex-wrap: wrap; gap: 24px; }
+.card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    padding: 32px; width: 350px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+
+.badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; display: inline-block; }
+.beginner { background: #dbeafe; color: #1e40af; }
+.intermediate { background: #fef3c7; color: #92400e; }
+
+.card-heading { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+.card-subtext { color: #64748b; margin-bottom: 25px; }
+
+.progress-container { background: #f1f5f9; height: 8px; border-radius: 10px; margin: 10px 0 25px; }
+.progress-bar { height: 100%; background: #2563eb; border-radius: 10px; transition: width 0.5s; }
+
+.solve-btn { background: #2563eb; color: #fff; border: none; padding: 12px; border-radius: 10px; cursor: pointer; text-decoration: none; display: block; text-align: center; font-weight: 600; }
+
+/* WORKSPACE STYLES */
+.workspace-container { display: flex; height: 90vh; background: #fff; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; }
+.task-sidebar { width: 40%; padding: 40px; border-right: 1px solid #e2e8f0; background: #fcfdfe; }
+.editor-area { width: 60%; padding: 40px; display: flex; flex-direction: column; }
+textarea { flex: 1; margin-top: 20px; border: 2px solid #f1f5f9; border-radius: 12px; padding: 20px; font-family: monospace; resize: none; outline: none; background: #fafbfc; }
+textarea:focus { border-color: #2563eb; }
+.premium-btn { width: 250px; align-self: flex-end; }
+.back-link { color: #2563eb; text-decoration: none; font-weight: 600; display: block; margin-bottom: 20px; }

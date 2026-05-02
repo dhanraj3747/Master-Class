@@ -1,0 +1,1368 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8fbff; /* Very calm, light blue-white */
+    color: #1f1f1f;
+    line-height: 1.6;
+    padding: 40px 20px;
+}
+
+
+/* Glassmorphism Navbar */
+.navbar-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.header-content1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.container { max-width: 1200px; margin: 0 auto; }
+.logo1 { font-size: 24px; font-weight: bold; color: #111; }
+.logo-coursera1 { color: #111; font-weight: 800; }
+
+.search-box { flex: 1; margin: 0 40px; }
+.search-box input {
+    width: 100%; padding: 12px 20px; border-radius: 25px; border: 1px solid #ccc;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); transition: 0.3s;
+}
+.search-box input:focus { outline: none; border-color: #333; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+
+.auth { display: flex; gap: 15px; }
+.btn { padding: 10px 22px; border-radius: 25px; cursor: pointer; font-weight: 600; }
+.btn-ghost { background: transparent; border: 1px solid #111; transition: 0.3s; }
+.btn-ghost:hover { background: #f0f0f0; }
+
+/* Dropdown */
+.dropdown { position: relative; display: inline-block; margin-left: 20px; }
+.dropbtn { background-color: transparent; color: #333; padding: 10px; font-size: 16px; border: none; cursor: pointer; font-weight: 600; }
+.dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); min-width: 800px; box-shadow: 0px 15px 30px rgba(0,0,0,0.15); padding: 30px; z-index: 1; border-radius: 12px; }
+.dropdown:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.menu-columns { display: flex; gap: 30px; }
+.col { flex: 1; display: flex; flex-direction: column; }
+.col h4 { margin-bottom: 15px; color: #111; }
+.col a { color: #444; text-decoration: none; padding: 6px 0; font-size: 14px; transition: 0.2s; }
+.col a:hover { color: #888; padding-left: 5px; }
+
+/* Main Container */
+.promo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Hero Section using Flexbox */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 60px;
+    padding: 20px 0;
+}
+
+.hero-content {
+    flex: 1.2; /* Takes slightly more space than the image */
+}
+
+.hero-graphic {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Typography Styling */
+.hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 30px;
+    max-width: 550px;
+}
+
+/* Button Styling */
+.btn-save {
+    display: inline-block;
+    background-color: #0056d2; /* Coursera Blue */
+    color: white;
+    padding: 14px 32px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-save:hover {
+    background-color: #00419e;
+}
+
+/* Stats Section using Flexbox */
+.stats-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    flex: 1;
+    background-color: #ebf3ff; /* Light blue tint */
+    padding: 25px;
+    border-radius: 12px;
+    text-align: left;
+}
+
+.stat-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.stat-card p {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.bottom-heading {
+    margin-top: 40px;
+    font-size: 1.5rem;
+}
+
+/* Placeholder Styling (For your images) */
+.placeholder-img {
+    background-color: #e2e8f0;
+    border: 2px dashed #cbd5e1;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.placeholder-img.small {
+    width: 150px;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+.placeholder-img.large {
+    width: 100%;
+    min-height: 350px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hero-content p {
+        margin: 0 auto 30px auto;
+    }
+
+    .stats-grid {
+        flex-direction: column;
+    }
+}
+
+
+.catalog-section {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+/* Filter Flexbox */
+.filter-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.filter-btn {
+    padding: 8px 24px;
+    border-radius: 20px;
+    border: 1px solid #d1d7dc;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.filter-btn.active {
+    background-color: #3e4e5b;
+    color: white;
+    border-color: #3e4e5b;
+}
+
+/* Course Grid Flexbox */
+.course-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.course-card {
+    flex: 1;
+    min-width: 250px;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+}
+
+/* Placeholder for your images */
+.image-placeholder {
+    height: 160px;
+    background-color: #f1f1f1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #eee;
+}
+
+.inner-img-space {
+    color: #999;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* Badges */
+.badge {
+    position: absolute;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.badge-top-right { top: 10px; right: 10px; background: #2a3b47; color: white; }
+.badge-white { top: 10px; right: 10px; background: white; color: black; border-radius: 12px; }
+
+.badge-row {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.badge-outline {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+}
+
+/* Card Content */
+.card-content {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.partner-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.logo-placeholder {
+    width: 24px;
+    height: 24px;
+    background: #eee;
+    border-radius: 4px; /* Space for partner logo */
+}
+
+.partner-name {
+    font-size: 0.85rem;
+    color: #6a6a6a;
+}
+
+.course-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.course-type {
+    margin-top: auto;
+    font-size: 0.85rem;
+    color: #6a6a6a;
+}
+
+/* Footer Button */
+.show-more-btn {
+    padding: 10px 20px;
+    border: 1px solid #0056d2;
+    background: white;
+    color: #0056d2;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.show-more-btn:hover {
+    background: #f0f7ff;
+}
+
+/* Special Shadow for the 2nd card style */
+.card-shadow {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* Browser Friendly Responsiveness */
+@media (max-width: 768px) {
+    .course-card {
+        min-width: 100%;
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+/* Flexbox for Filters */
+.org-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.org-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #d1d7dc;
+    border-radius: 50px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.org-chip.active {
+    border-color: #0056d2;
+    background-color: #f0f7ff;
+    color: #0056d2;
+}
+
+.chip-logo-placeholder {
+    width: 20px;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+/* Flexbox for Course Grid */
+.course-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.course-card {
+    flex: 1; /* Makes all cards equal width */
+    min-width: 260px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Placeholder for images */
+.thumb-container {
+    width: 100%;
+    height: 160px;
+    background-color: #f1f1f1;
+    position: relative;
+    border-bottom: 1px solid #eee;
+}
+
+.image-space {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* Badges Alignment */
+.badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.badge-dark { background: #1f1f1f; color: white; }
+.badge-white { 
+    background: rgba(255, 255, 255, 0.95); 
+    color: #1f1f1f; 
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.badge-group {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+}
+
+/* Card Text Alignment */
+.card-footer {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.partner-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #6a6a6a;
+    margin-bottom: 12px;
+}
+
+.mini-logo {
+    width: 18px;
+    height: 18px;
+    background: #eee;
+    border-radius: 3px;
+}
+
+.course-name {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: auto; /* Pushes label to the bottom */
+    padding-bottom: 20px;
+}
+
+.course-label {
+    font-size: 0.85rem;
+    color: #6a6a6a;
+}
+
+/* Show More Button */
+.show-more {
+    padding: 10px 24px;
+    border: 1px solid #0056d2;
+    background: white;
+    color: #0056d2;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.show-more:hover {
+    background-color: #f0f7ff;
+}
+
+/* Responsive Grid */
+@media (max-width: 1024px) {
+    .course-grid {
+        flex-wrap: wrap;
+    }
+    .course-card {
+        flex: 1 1 45%; /* 2 cards per row on tablets */
+    }
+}
+
+@media (max-width: 600px) {
+    .course-card {
+        flex: 1 1 100%; /* 1 card per row on mobile */
+    }
+}
+
+.genai-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header Alignment */
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.section-header p {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 24px;
+}
+
+/* Flexbox Filter Bar */
+.filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.chip {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid #d1d7dc;
+    background: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chip.active {
+    background-color: #3e4e5b;
+    color: white;
+    border-color: #3e4e5b;
+}
+
+/* Flexbox Grid for Cards */
+.course-flex-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+    align-items: stretch; /* Ensures all cards in a row have equal height */
+}
+
+.course-card {
+    flex: 1; /* Makes cards grow equally */
+    min-width: 260px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column; /* Vertical stack inside card */
+    overflow: hidden;
+    background: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Image Placeholder Space */
+.image-placeholder {
+    height: 160px;
+    background-color: #f8f9fa; /* Calm light gray */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.img-inner-space {
+    color: #aaa;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Badge Alignment */
+.badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ffffff;
+    color: #1f1f1f;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Card Content Alignment */
+.card-content {
+    padding: 16px;
+    flex-grow: 1; /* Forces the content to fill card height */
+    display: flex;
+    flex-direction: column;
+}
+
+.partner-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.partner-logo-box {
+    width: 24px;
+    height: 24px;
+    background-color: #eee;
+    border-radius: 4px;
+}
+
+.partner-name {
+    font-size: 0.85rem;
+    color: #6a6a6a;
+}
+
+.course-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 20px; /* Space before the bottom label */
+}
+
+/* Proper alignment of bottom text */
+.course-meta {
+    margin-top: auto; /* Pushes this to the very bottom of the card */
+    font-size: 0.85rem;
+    color: #6a6a6a;
+}
+
+/* Show More Button */
+.show-more-btn {
+    padding: 10px 24px;
+    border: 1px solid #0056d2;
+    background: transparent;
+    color: #0056d2;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.show-more-btn:hover {
+    background-color: #f0f7ff;
+}
+
+/* Browser-friendly responsiveness */
+@media (max-width: 992px) {
+    .course-flex-grid {
+        flex-wrap: wrap;
+    }
+    .course-card {
+        flex: 1 1 45%; /* Two cards per row on tablets */
+    }
+}
+
+@media (max-width: 600px) {
+    .filter-bar {
+        overflow-x: auto; /* Horizontal scroll for chips on small screens */
+        padding-bottom: 10px;
+    }
+    .course-card {
+        flex: 1 1 100%; /* Full width on mobile */
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header Styling */
+.section-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.section-header p {
+    color: #444;
+    font-size: 1rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* Filter Bar Flexbox */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.chip {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid #d1d7dc;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.chip.active {
+    background-color: #3e4e56; /* Dark slate blue */
+    color: white;
+    border-color: #3e4e56;
+}
+
+/* Grid Flexbox */
+.course-grid {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+/* Individual Card Styling */
+.card {
+    flex: 1; /* Makes all cards equal width */
+    background: white;
+    border: 1px solid #e1e1e1;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column; /* Vertical stack inside card */
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Image Placeholder Space */
+.image-space {
+    width: 100%;
+    height: 160px;
+    background-color: #eee; /* This is where your image will sit */
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Card Bottom Content */
+.card-content {
+    padding: 20px;
+    flex-grow: 1; /* Occupies all available space */
+    display: flex;
+    flex-direction: column;
+}
+
+.partner-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.logo-placeholder {
+    width: 20px;
+    height: 20px;
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.course-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+/* THE ALIGNMENT TRICK: pushes the type label to the bottom of the card */
+.course-type {
+    margin-top: auto; 
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Browser Responsive - stacks cards on smaller screens */
+@media (max-width: 900px) {
+    .course-grid {
+        flex-wrap: wrap;
+    }
+    .card {
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 600px) {
+    .card {
+        flex: 1 1 100%;
+    }
+}
+
+
+.degree-section {
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+/* Header Alignment */
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.section-header p {
+    font-size: 1.05rem;
+    color: #444;
+}
+
+/* Flexbox Grid for Cards */
+.degree-grid {
+    display: flex;
+    gap: 20px;
+    align-items: stretch; /* Makes all cards equal height */
+}
+
+.degree-card {
+    flex: 1; /* Makes cards grow equally in width */
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Stacks image and content vertically */
+    background: #fff;
+    transition: transform 0.2s ease;
+}
+
+/* Image Placeholder Styling */
+.image-container {
+    width: 100%;
+    height: 180px;
+    background-color: #f1f1f1;
+}
+
+.placeholder-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* Card Content Alignment */
+.card-content {
+    padding: 20px;
+    flex-grow: 1; /* This is key: it fills the vertical space */
+    display: flex;
+    flex-direction: column;
+}
+
+.uni-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.uni-logo-space {
+    width: 32px;
+    height: 32px;
+    background-color: #eee;
+    border-radius: 4px; /* Space for your University logo */
+    flex-shrink: 0;
+}
+
+.uni-name {
+    font-size: 0.9rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.degree-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    line-height: 1.3;
+}
+
+/* Links and Footer Alignment */
+.earn-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #0056d2; /* Professional blue */
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: auto; /* Pushes the link and footer to the bottom */
+}
+
+.icon-placeholder {
+    font-size: 1.1rem;
+}
+
+.card-footer {
+    font-size: 0.85rem;
+    color: #6a6a6a;
+    margin-top: 10px;
+}
+
+/* Browser Friendly Responsiveness */
+@media (max-width: 1024px) {
+    .degree-grid {
+        flex-wrap: wrap; /* Wraps cards on smaller screens */
+    }
+    .degree-card {
+        flex: 1 1 calc(50% - 20px); /* 2 cards per row */
+    }
+}
+
+@media (max-width: 600px) {
+    .degree-card {
+        flex: 1 1 100%; /* 1 card per row on mobile */
+    }
+}
+
+/* Main Banner Container - FLEXBOX */
+.main-promo-banner {
+    background-color: #121417; /* Dark background */
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+    overflow: hidden;
+    gap: 40px;
+}
+
+/* Left Intro Text */
+.banner-intro {
+    flex: 0 0 300px; /* Fixed width for text section */
+    color: white;
+}
+
+.banner-intro h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.banner-intro p {
+    font-size: 1.1rem;
+    color: #cbd5e1;
+    margin-bottom: 30px;
+}
+
+.explore-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    transition: border 0.3s;
+}
+
+.explore-link:hover {
+    border-bottom: 1px solid white;
+}
+
+/* Cards Wrapper - FLEXBOX */
+.cards-container {
+    display: flex;
+    gap: 20px;
+    flex-grow: 1;
+    justify-content: flex-start;
+}
+
+/* Individual Card Styling */
+.cert-card {
+    background: white;
+    border-radius: 16px;
+    flex: 1; /* All cards equal width */
+    min-width: 280px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.cert-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Image Space */
+.img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 160px;
+}
+
+.img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* Placeholder colors */
+.blue-grad { background: linear-gradient(135deg, #4c1d95, #7c3aed); }
+.gray-bg   { background: #e2e8f0; color: #64748b; }
+.warm-bg   { background: #fed7aa; color: #9a3412; }
+
+/* Badges */
+.badge-row {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Card Content Alignment */
+.card-body {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.partner-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.partner-logo {
+    width: 24px;
+    height: 24px;
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.cert-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.degree-link {
+    font-size: 0.9rem;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+/* Bottom Alignment */
+.cert-footer {
+    margin-top: auto; /* Pushes to bottom */
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+/* Browser Friendly Responsiveness */
+@media (max-width: 1000px) {
+    .main-promo-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .cards-container {
+        width: 100%;
+        overflow-x: auto; /* Allow horizontal scroll on mobile */
+        padding-bottom: 10px;
+    }
+    .cert-card {
+        flex: 0 0 280px;
+    }
+}
+
+
+/* --- FOOTER MAIN WRAPPER --- */
+.footer-container {
+  max-width: 1200px;       /* Industry standard desktop width */
+  margin: 0 auto;          /* Centers the footer on the screen */
+  padding: 80px 24px;      /* Large top/bottom padding for a "calm" look */
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- FLEXBOX COLUMN ALIGNMENT --- */
+.flex-wrapper {
+  display: flex;
+  flex-wrap: wrap;         /* Allows columns to wrap on smaller screens */
+  justify-content: space-between; /* Spreads columns evenly across the width */
+  gap: 40px 20px;          /* Vertical and Horizontal spacing between columns */
+  align-items: flex-start;
+}
+
+/* --- INDIVIDUAL COLUMN (CARD) STYLING --- */
+.footer-card {
+  flex: 1 1 160px;         /* Flexible growth, but minimum 160px width */
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Column Headings */
+.footer-card .card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;          /* Strong dark grey for readability */
+  margin-bottom: 20px;     /* Space below heading */
+  line-height: 1.2;
+}
+
+/* --- LINK LIST STYLING --- */
+.card-list {
+  list-style: none;        /* Remove default bullets */
+  padding: 0;
+  margin: 0;
+}
+
+.card-list li {
+  margin-bottom: 12px;     /* Comfortable spacing between links */
+}
+
+.card-list a {
+  font-size: 14px;
+  color: #5e5e5e;          /* Muted grey for a calm, professional feel */
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  line-height: 1.4;
+  display: inline-block;
+}
+
+.card-list a:hover {
+  color: #0056d2;          /* Clean blue for interaction */
+  text-decoration: underline;
+}
+
+/* --- APP STORE BUTTONS ALIGNMENT --- */
+.app-card {
+  flex: 1 1 180px;
+}
+
+.app-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.app-btn {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  width: 160px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: opacity 0.2s ease;
+}
+
+.app-btn:hover {
+  opacity: 0.8;
+}
+
+/* --- BOTTOM SITE BAR (Copyright & Socials) --- */
+.site-footer {
+  background-color: #ffffff; /* Clean white background */
+  border-top: 1px solid #e0e0e0; /* Subtle divider line */
+  padding: 40px 0;
+  margin-top: 40px;
+}
+
+.site-footer .footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.copyright {
+  font-size: 14px;
+  color: #666;
+}
+
+.social-links {
+  display: flex;
+  gap: 20px;
+}
+
+.social-icon {
+  font-size: 20px;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social-icon:hover {
+  color: #0056d2;
+  transform: translateY(-3px);
+}
+
+/* --- RESPONSIVE FIXES --- */
+@media (max-width: 900px) {
+  .flex-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .flex-wrapper {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+  }
+  
+  .site-footer .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* 1. The Container: Handles the "Proper Center Align" */
+.action-section-container {
+  display: flex;            /* Enables flexbox */
+  justify-content: center;  /* Centers buttons horizontally */
+  align-items: center;      /* Centers buttons vertically */
+  gap: 30px;                /* Creates even spacing between buttons */
+  padding: 50px 20px;       /* Padding for top/bottom and mobile edges */
+  flex-wrap: wrap;          /* Responsive: allows buttons to wrap on small screens */
+}
+
+/* 2. Base Button Styles (Common to all) */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px;
+  border-radius: 10px;      /* Matches the rounded corners in your image */
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;    /* Removes underline from links */
+  transition: 0.3s ease;    /* Smooth hover effect */
+}
+
+/* 3. News Button (Solid Blue) */
+.btn-news-primary {
+  background-color: #0056D2;
+  color: #ffffff;
+  border: 2px solid #0056D2;
+}
+
+.btn-news-primary:hover {
+  background-color: #0041a3;
+  border-color: #0041a3;
+}
+
+/* 4. Trending Button (Outlined Blue) */
+.btn-trending-outline {
+  background-color: transparent;
+  color: #0056D2;
+  border: 1px solid #0056D2;
+}
+
+.btn-trending-outline:hover {
+  background-color: rgba(0, 86, 210, 0.05);
+}
+
+/* 5. Role Button (Outlined Blue) */
+.btn-role-outline {
+  background-color: transparent;
+  color: #0056D2;
+  border: 1px solid #0056D2;
+}
+
+.btn-role-outline:hover {
+  background-color: rgba(0, 86, 210, 0.05);
+}
+
+/* 6. Arrow Icon Spacing */
+.arrow-icon {
+  margin-left: 10px;
+  font-size: 20px;
+  line-height: 1;
+}

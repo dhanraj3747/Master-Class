@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Learning Analytics | EduStream Pro</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="d.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+                <span>EduStream <small>Analytics</small></span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-group">
+                    <label>Main Menu</label>
+                    <ul>
+                        <li class="active"><a href="#"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+                        <li><a href="login.jsp"><i class="fa-solid fa-graduation-cap"></i> My Learning</a></li>
+                        <li><a href="certificate.jsp"><i class="fa-solid fa-compass"></i> Certificates</a></li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <label>Insights</label>
+                    <ul>
+                        <li><a href="#"><i class="fa-solid fa-chart-line"></i> PowerBI Reports</a></li>
+                        <li><a href="#"><i class="fa-solid fa-award"></i> Certificates</a></li>
+                        <li><a href="#"><i class="fa-solid fa-users-viewfinder"></i> Mentorship</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="pro-badge">
+                    <i class="fa-solid fa-crown"></i>
+                    <span>Premium Plan</span>
+                    <p>Access to PowerBI insights</p>
+                </div>
+                <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header>
+                <div class="header-left">
+                    <h2 id="greeting">Loading...</h2>
+                    <p id="current-date"></p>
+                </div>
+                <div class="header-right">
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search analytics, courses...">
+                    </div>
+                    <div class="icon-actions">
+                        <div class="icon-box"><i class="fa-regular fa-comment-dots"></i></div>
+                        <div class="icon-box notification">
+                            <i class="fa-regular fa-bell"></i>
+                            <span class="pulse"></span>
+                        </div>
+                    </div>
+                    <div class="profile-pill">
+                        <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User">
+                        <span>Alex J.</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- KPI Cards Section (PowerBI Style) -->
+            <section class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <p>Total Study Time</p>
+                        <h3>154.8 <small>hrs</small></h3>
+                        <span class="trend up"><i class="fa-solid fa-caret-up"></i> 12% vs last month</span>
+                    </div>
+                    <div class="kpi-chart-mini"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <p>Course Completion</p>
+                        <h3>82.4%</h3>
+                        <span class="trend up"><i class="fa-solid fa-caret-up"></i> 5.4% improvement</span>
+                    </div>
+                    <div class="kpi-chart-mini"><i class="fa-solid fa-circle-check"></i></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <p>Active Streaks</p>
+                        <h3>14 <small>days</small></h3>
+                        <span class="trend down"><i class="fa-solid fa-caret-down"></i> 2% drop</span>
+                    </div>
+                    <div class="kpi-chart-mini"><i class="fa-solid fa-fire"></i></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <p>Certificates Earned</p>
+                        <h3>09</h3>
+                        <span class="trend up"><i class="fa-solid fa-caret-up"></i> +2 this month</span>
+                    </div>
+                    <div class="kpi-chart-mini"><i class="fa-solid fa-medal"></i></div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="analytics-row">
+                <div class="chart-container large">
+                    <div class="chart-header">
+                        <h3>Learning Activity <small>(Weekly)</small></h3>
+                        <select id="timeRange">
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                        </select>
+                    </div>
+                    <canvas id="activityChart"></canvas>
+                </div>
+                <div class="chart-container small">
+                    <div class="chart-header">
+                        <h3>Skill Distribution</h3>
+                    </div>
+                    <canvas id="skillRadar"></canvas>
+                </div>
+            </section>
+
+            <div class="main-grid">
+                <!-- Course List -->
+                <section class="course-list">
+                    <div class="section-title">
+                        <h3>Continue Learning</h3>
+                        <button class="text-btn">View All</button>
+                    </div>
+                    
+                    <div class="course-item">
+                        <div class="course-icon bg-blue"><i class="fa-brands fa-python"></i></div>
+                        <div class="course-details">
+                            <h4>Python for Data Science</h4>
+                            <p>8/12 Lessons Completed</p>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar" style="width: 75%;"></div>
+                            </div>
+                        </div>
+                        <button class="resume-btn">Resume</button>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-icon bg-purple"><i class="fa-solid fa-chart-column"></i></div>
+                        <div class="course-details">
+                            <h4>Advanced PowerBI Modeling</h4>
+                            <p>2/10 Lessons Completed</p>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar" style="width: 20%;"></div>
+                            </div>
+                        </div>
+                        <button class="resume-btn">Resume</button>
+                    </div>
+                </section>
+
+                <!-- Activity Feed -->
+                <aside class="activity-feed">
+                    <div class="section-title">
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-point"></div>
+                        <div class="feed-content">
+                            <p><strong>Quiz Passed:</strong> Data Structures 101</p>
+                            <span>2 hours ago</span>
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-point"></div>
+                        <div class="feed-content">
+                            <p><strong>Earned:</strong> Verified Certificate in UI/UX</p>
+                            <span>Yesterday</span>
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-point"></div>
+                        <div class="feed-content">
+                            <p><strong>Note Added:</strong> JavaScript Closures</p>
+                            <span>Oct 20, 2023</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <script src="d.js"></script>
+</body>
+</html>

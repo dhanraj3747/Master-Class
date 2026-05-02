@@ -1,0 +1,26 @@
+/* theme.css */
+:root {
+    --bg-color: #f5f7fa;
+    --card-bg: #ffffff;
+    --text-color: #1a1f35;
+    --border-color: #e8ecf1;
+}
+
+[data-theme="dark"] {
+    --bg-color: #0d1117;
+    --card-bg: #161b22;
+    --text-color: #c9d1d9;
+    --border-color: #30363d;
+}
+
+/* Apply variables to existing classes */
+body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
+
+.stat-card, .course-card, .dashboard-header, .mod-card, .quiz-box {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
