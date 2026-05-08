@@ -1,90 +1,127 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List, com.tap.dao.QuestionDAO, com.tap.model.Question" %>
+
+
+<%! 
+    // This helper function stops the browser from turning answers into invisible code
+    public String safeText(String s) {
+        if (s == null) return "";
+        return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;");
+    }
+%>
+<%
+    // 1. Session Protection
+    if(session.getAttribute("userId") == null) { response.sendRedirect("login.jsp"); return; }
+    
+    String folder = request.getParameter("folder");
+    String tech = (folder != null) ? folder.toUpperCase() : "GENERAL";
+    
+    // 2. Dynamic Timer Logic (In Seconds)
+    int timeLimit = 1800; // Default 30 mins
+    switch(tech) {
+        case "JAVA":       timeLimit = 2000; break; // 40 Mins
+        case "PYTHON":     timeLimit = 1800; break; // 30 Mins
+        case "JAVASCRIPT": timeLimit = 1500; break; // 25 Mins
+        case "HTML":       timeLimit = 900;  break; // 15 Mins
+        case "CSS":        timeLimit = 900;  break; // 15 Mins
+    }
+    
+    QuestionDAO dao = new QuestionDAO();
+    List<Question> currentQuestions = dao.getDynamicQuestions(folder, "Assessment");
+%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Assessment</title>
+    <meta charset="UTF-8">
+    <title>Assessment: <%= tech %> | EduStream Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Segoe UI', sans-serif; }
-        .question-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 25px; margin-bottom: 20px; }
-        .form-check-label { cursor: pointer; padding: 10px; width: 100%; border-radius: 8px; transition: 0.2s; }
-        .form-check-label:hover { background-color: #21262d; }
+        body { background: #0b1121; color: #f8fafc; font-family: 'Poppins', sans-serif; padding: 60px 20px; }
+        .timer-box { position: fixed; top: 30px; right: 30px; background: rgba(0,242,254,0.1); border: 2px solid #00f2fe; padding: 12px 25px; border-radius: 50px; color: #00f2fe; font-weight: 700; z-index: 1000; box-shadow: 0 0 15px rgba(0,242,254,0.3); }
+        .q-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 35px; margin-bottom: 30px; transition: 0.3s; }
+        .q-card:hover { border-color: #00f2fe; background: rgba(255,255,255,0.07); }
+        .form-check { background: rgba(255,255,255,0.03); padding: 15px 15px 15px 40px; border-radius: 12px; margin-bottom: 12px; border: 1px solid transparent; cursor: pointer; transition: 0.2s; }
+        .form-check:hover { border-color: #00f2fe; background: rgba(0,242,254,0.05); }
+        .btn-submit { background: linear-gradient(135deg, #00f2fe, #4facfe); border: none; color: white; font-weight: 700; padding: 18px 60px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,242,254,0.2); }
     </style>
 </head>
-<body class="p-5">
-    <div class="container" style="max-width: 800px;">
-        <h2 class="mb-4 text-center fw-bold">Assessment in Progress</h2>
+<body>
+    <div class="timer-box"><i class="fas fa-clock me-2"></i><span id="timeDisplay">--:--</span></div>
+    
+    <div class="container" style="max-width: 850px;">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold m-0">Assessment: <span style="color: #00f2fe;"><%= tech %></span></h2>
+            <p class="text-muted mt-2">Please do not refresh the page during the test.</p>
+        </div>
         
-        <form action="evaluateTest" method="post">
-            <c:forEach var="q" items="${currentQuestions}" varStatus="loop">
-                <div class="question-card shadow-lg">
-                    <h5>${loop.count}. ${q.questionText}</h5>
-                    <div class="mt-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="ans_${q.questionId}" value="A" id="q${q.questionId}A" required>
-                            <label class="form-check-label" for="q${q.questionId}A">A) ${q.optionA}</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="ans_${q.questionId}" value="B" id="q${q.questionId}B">
-                            <label class="form-check-label" for="q${q.questionId}B">B) ${q.optionB}</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="ans_${q.questionId}" value="C" id="q${q.questionId}C">
-                            <label class="form-check-label" for="q${q.questionId}C">C) ${q.optionC}</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="ans_${q.questionId}" value="D" id="q${q.questionId}D">
-                            <label class="form-check-label" for="q${q.questionId}D">D) ${q.optionD}</label>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary btn-lg px-5">Submit Assessment</button>
-            </div>
-        </form>
+        <form id="assessmentForm" action="SubmitAssessmentServlet" method="post">
+            <input type="hidden" name="folder" value="<%= folder %>">
+            <input type="hidden" name="timeSpent" id="timeSpentField" value="0">
+
+            <% if(currentQuestions == null || currentQuestions.isEmpty()) { %>
+                <div class="alert alert-warning text-center">No Assessment questions found for <%= tech %>.</div>
+            <% } else { 
+                int i = 1;
+                for(Question q : currentQuestions) { %>
+              
+              
+              
+              <div class="q-card">
+    <h4 class="mb-4 fw-bold"><%= i++ %>. <%= safeText(q.getQuestionText()) %></h4>
+    
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="q_<%= q.getQuestionId() %>" value="<%= safeText(q.getOptionA()) %>" required>
+        <label class="form-check-label w-100">A) <%= safeText(q.getOptionA()) %></label>
     </div>
     
-    <script>
-    // Dynamically grab the duration from the assessment object passed by the Servlet.
-    // If it fails to find it, it defaults to 30 minutes as a safety net.
-    let durationInMinutes = <%= (request.getAttribute("assessment") != null) ? ((com.tap.model.Assessment)request.getAttribute("assessment")).getDurationMinutes() : 30 %>;
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="q_<%= q.getQuestionId() %>" value="<%= safeText(q.getOptionB()) %>">
+        <label class="form-check-label w-100">B) <%= safeText(q.getOptionB()) %></label>
+    </div>
     
-    let totalSeconds = durationInMinutes * 60;
-    const timeDisplay = document.getElementById('timeDisplay');
-    const timerDiv = document.getElementById('floating-timer');
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="q_<%= q.getQuestionId() %>" value="<%= safeText(q.getOptionC()) %>">
+        <label class="form-check-label w-100">C) <%= safeText(q.getOptionC()) %></label>
+    </div>
+    
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="q_<%= q.getQuestionId() %>" value="<%= safeText(q.getOptionD()) %>">
+        <label class="form-check-label w-100">D) <%= safeText(q.getOptionD()) %></label>
+    </div>
+</div>
+            <% } %>
+            <div class="text-center mt-5 mb-5">
+                <button type="submit" class="btn btn-submit">Finalize & Submit</button>
+            </div>
+            <% } %>
+        </form>
+    </div>
 
-    function updateTimer() {
-        let m = Math.floor(totalSeconds / 60);
-        let s = totalSeconds % 60;
-        
-        // Add leading zeros
-        timeDisplay.textContent = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+    <script>
+        let secondsLeft = <%= timeLimit %>;
+        const totalTime = <%= timeLimit %>;
 
-        // Warning state: less than 5 minutes remaining (turns Red)
-        if (totalSeconds <= 300 && totalSeconds > 0) {
-            timerDiv.style.color = "#ff4757";
-            timerDiv.style.borderColor = "#ff4757";
-            timerDiv.style.boxShadow = "0 0 15px rgba(255, 71, 87, 0.6)";
-        }
-
-        // Time is up! Auto-submit
-        if (totalSeconds <= 0) {
-            clearInterval(timerInterval);
-            timeDisplay.textContent = "00:00";
-            alert("Time is up! Your assessment is being submitted automatically.");
+        const countdown = setInterval(() => {
+            secondsLeft--;
+            let mins = Math.floor(secondsLeft / 60);
+            let secs = secondsLeft % 60;
             
-            // This grabs the first <form> on your page and forces it to submit
-            document.forms[0].submit(); 
-        } else {
-            totalSeconds--;
-        }
-    }
+            document.getElementById('timeDisplay').innerText = (mins < 10 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
+            document.getElementById('timeSpentField').value = totalTime - secondsLeft;
 
-    // Start the countdown
-    const timerInterval = setInterval(updateTimer, 1000);
-    updateTimer();
-</script>
+            if (secondsLeft <= 300) { // Warning at 5 mins
+                document.querySelector('.timer-box').style.color = "#ff4d4d";
+                document.querySelector('.timer-box').style.borderColor = "#ff4d4d";
+            }
+
+            if (secondsLeft <= 0) {
+                clearInterval(countdown);
+                alert("Session expired. Submitting your answers now.");
+                document.getElementById('assessmentForm').submit();
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

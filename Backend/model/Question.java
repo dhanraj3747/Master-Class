@@ -8,8 +8,9 @@ public class Question {
     private String correctOption;
     private String folderCategory;
     private String correctAnswer; 
-    // Note: If you already have a variable for the answer (like 'answer' or 'correctOption'), 
-    // change the servlet code on line 71 to match your existing setter name instead of adding this.
+    
+    // NEW: Added questionType to differentiate Assessment, Assignment, and Practice
+    private String questionType;
 
     public int getQuestionId() { return questionId; }
     public void setQuestionId(int questionId) { this.questionId = questionId; }
@@ -27,19 +28,16 @@ public class Question {
     public void setOptionD(String optionD) { this.optionD = optionD; }
     public String getCorrectOption() { return correctOption; }
     public void setCorrectOption(String correctOption) { this.correctOption = correctOption; }
-    public String getFolderCategory() {
-        return folderCategory;
-    }
-
-    public void setFolderCategory(String folderCategory) {
-        this.folderCategory = folderCategory;
-    }
-
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
+    public String getFolderCategory() { return folderCategory; }
+    public void setFolderCategory(String folderCategory) { this.folderCategory = folderCategory; }
+    public String getCorrectAnswer() { return correctAnswer; }
+    public void setCorrectAnswer(String correctAnswer) { this.correctAnswer = correctAnswer; }
+    
+    // NEW GETTERS & SETTERS
+    public String getQuestionType() { return questionType; }
+    public void setQuestionType(String questionType) { this.questionType = questionType; }
+	public void setId(int int1) {
+		// TODO Auto-generated method stub
+		
+	}
 }

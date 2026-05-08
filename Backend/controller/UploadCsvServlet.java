@@ -1,93 +1,82 @@
 package com.tap.controller;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.*;
+import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-
+import javax.servlet.http.*;
 import com.tap.dao.QuestionDAO;
+import com.tap.dao.NotificationDAO;
 import com.tap.model.Question;
 
-// VERY IMPORTANT: You must include @MultipartConfig to handle file uploads
 @WebServlet("/UploadCsvServlet")
-@MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-    maxFileSize = 1024 * 1024 * 10,      // 10 MB
-    maxRequestSize = 1024 * 1024 * 100   // 100 MB
-)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 100)
 public class UploadCsvServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-        // 1. Get the folder/category selected by the Admin in the UI dropdown
-        String folderCategory = request.getParameter("category"); // e.g., "HTML", "Java"
-        
-        // 2. Get the uploaded CSV file
+        // 1. Retrieve parameters from questionportal.jsp
+        String folderCategory = request.getParameter("category"); 
+        String questionType = request.getParameter("questionType"); 
         Part filePart = request.getPart("csvFile"); 
         
-        if (filePart == null || folderCategory == null || folderCategory.isEmpty()) {
-            response.sendRedirect("questionportal.jsp?error=Missing file or category");
+        if (filePart == null || folderCategory == null || questionType == null) {
+            response.sendRedirect("questionportal.jsp?error=Missing parameters");
             return;
         }
+        
+        // GRAB THE EXACT CSV FILE NAME dynamically for the notification
+        String actualFileName = filePart.getSubmittedFileName();
 
         List<Question> questionList = new ArrayList<>();
 
-        // 3. Read the file line by line
+        // 2. Parse the CSV file content
         try (InputStream fileContent = filePart.getInputStream();
              BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent))) {
              
             String line;
             boolean isFirstLine = true;
-            
             while ((line = reader.readLine()) != null) {
-                // Skip the header row of the CSV
-                if (isFirstLine) {
-                    isFirstLine = false;
-                    continue; 
-                }
-
-                // Assuming CSV format: QuestionText, OptionA, OptionB, OptionC, OptionD, CorrectAnswer
+                if (isFirstLine) { isFirstLine = false; continue; }
                 String[] data = line.split(",");
-                
-                // Ensure the row has the correct number of columns before adding
                 if (data.length >= 6) {
                     Question q = new Question();
-                    q.setFolderCategory(folderCategory); // Attach the folder assigned by admin
+                    q.setFolderCategory(folderCategory); 
+                    q.setQuestionType(questionType); 
                     q.setQuestionText(data[0].trim());
                     q.setOptionA(data[1].trim());
                     q.setOptionB(data[2].trim());
                     q.setOptionC(data[3].trim());
                     q.setOptionD(data[4].trim());
                     q.setCorrectOption(data[5].trim());
-                    
                     questionList.add(q);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect("questionportal.jsp?error=Failed to parse CSV");
+            response.sendRedirect("questionportal.jsp?error=CSV Parse Error");
             return;
         }
 
-        // 4. Send the list to the DAO to be saved in the database
-        QuestionDAO questionDAO = new QuestionDAO();
-        boolean success = questionDAO.batchInsertQuestions(questionList); // You need to create this method in QuestionDAO
-
+        // 3. Database Insertions
+        QuestionDAO qDAO = new QuestionDAO();
+        boolean success = qDAO.batchInsertQuestions(questionList); 
+        
         if (success) {
-            response.sendRedirect("questionportal.jsp?success=Questions uploaded successfully");
+            // 4. TRIGGER NOTIFICATION (UPDATED TO NEW DYNAMIC SYSTEM)
+            try {
+                NotificationDAO nDAO = new NotificationDAO();
+                // Send the exact details to all 6 students
+                nDAO.sendNotificationToAll(actualFileName, questionType, folderCategory);
+                System.out.println("Notification sent to Student Dashboard for: " + actualFileName);
+            } catch (Exception e) {
+                System.err.println("Notification Error: " + e.getMessage());
+            }
+            
+            // 5. Final Redirect to Admin Dashboard
+            response.sendRedirect("questionportal.jsp?success=Upload Successful and Students Notified!");
         } else {
-            response.sendRedirect("questionportal.jsp?error=Database insertion failed");
+            response.sendRedirect("questionportal.jsp?error=Database Insert Failed");
         }
     }
 }

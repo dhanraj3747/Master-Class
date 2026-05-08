@@ -1,10 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%
     // Security Check: Only allow 'admin' to see this page
     String role = (String) session.getAttribute("role");
     if(role == null || !role.equals("admin")) {
-        response.sendRedirect("studentDashboard.jsp");
+        response.sendRedirect("login.jsp");
         return; 
     }
 %>
@@ -13,223 +12,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Question Bank | EduStream Professional</title>
+    <title>Enterprise Question Portal | Edutree-Stars</title>
     
-    <!-- Bootstrap 5 for layout utilities -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* =========================================================================
-           PREMIUM ENTERPRISE / GITHUB-STYLE THEME
+           ULTRA PREMIUM CYAN GLASSY THEME (Matched to Login.jsp)
            ========================================================================= */
         :root {
-            --bg-body: #f6f8fa; 
-            --bg-surface: #ffffff;
-            --text-primary: #24292f;
-            --text-secondary: #57606a;
-            --border-color: #d0d7de;
-            --btn-primary-bg: #0969da; 
-            --btn-primary-hover: #0550ae;
-            --focus-ring: rgba(9, 105, 218, 0.3);
-            --danger-text: #cf222e;
+            --bg-color: #f4f7f9; 
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --cyan-primary: #00f2fe;
+            --cyan-secondary: #4facfe;
+            --cyan-glow: rgba(0, 242, 254, 0.15);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-primary);
-            height: 100vh;
-            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 0% 0%, var(--cyan-glow), transparent 40%), 
+                              radial-gradient(circle at 100% 100%, var(--cyan-glow), transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-header i {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--cyan-primary), var(--cyan-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cyan-secondary);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        /* --- Main Card Container --- */
-        .admin-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            width: 100%;
-            max-width: 450px;
-            padding: 32px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
-        }
-
-        .brand-icon {
-            color: var(--text-primary);
-            font-size: 2rem;
-            margin-bottom: 16px;
-            display: inline-block;
-        }
-
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .page-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
+            gap: 10px;
         }
 
         /* --- Form Elements --- */
-        .form-label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .premium-select, .premium-file {
-            width: 100%;
-            padding: 8px 12px;
+        .form-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--text-color); }
+        
+        .form-control, .premium-select {
+            background: #ffffff;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 16px;
             font-size: 0.9rem;
-            color: var(--text-primary);
-            background-color: var(--bg-body);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: 0.3s;
         }
 
-        .premium-select {
-            appearance: none;
-            cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2357606a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 16px;
-        }
-
-        .premium-select:hover, .premium-file:hover {
-            background-color: #f3f4f6;
-        }
-
-        .premium-select:focus, .premium-file:focus {
+        .form-control:focus, .premium-select:focus {
+            border-color: var(--cyan-secondary);
+            box-shadow: 0 0 0 4px var(--cyan-glow);
             outline: none;
-            border-color: var(--btn-primary-bg);
-            box-shadow: 0 0 0 3px var(--focus-ring);
-            background-color: var(--bg-surface);
         }
 
-        /* --- Premium Button --- */
-        .btn-primary-custom {
+        /* --- Buttons --- */
+        .btn-cyan {
+            background: linear-gradient(135deg, var(--cyan-primary), var(--cyan-secondary));
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: 0.3s;
             width: 100%;
-            background-color: var(--btn-primary-bg);
-            color: #ffffff;
-            border: 1px solid rgba(27, 31, 36, 0.15);
-            border-radius: 6px;
-            padding: 10px 16px;
-            font-size: 0.9rem;
+        }
+
+        .btn-cyan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--cyan-glow);
+        }
+
+        .btn-outline-cyan {
+            background: transparent;
+            border: 2px solid var(--cyan-secondary);
+            color: var(--cyan-secondary);
+            padding: 10px 20px;
+            border-radius: 12px;
             font-weight: 600;
-            margin-top: 24px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 1px 0 rgba(27, 31, 36, 0.1);
-        }
-
-        .btn-primary-custom:hover {
-            background-color: var(--btn-primary-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-primary-custom:active {
-            transform: translateY(0);
-            box-shadow: none;
-        }
-
-        /* --- Secondary Links --- */
-        .action-footer {
-            margin-top: 24px;
-            text-align: center;
-            font-size: 0.85rem;
-        }
-
-        .link-cancel {
-            color: var(--text-secondary);
+            transition: 0.3s;
+            width: 100%;
             text-decoration: none;
-            transition: color 0.2s ease;
+            display: inline-block;
+            text-align: center;
         }
 
-        .link-cancel:hover {
-            color: var(--danger-text);
-            text-decoration: underline;
+        .btn-outline-cyan:hover {
+            background: var(--cyan-glow);
+            color: var(--cyan-secondary);
         }
+
+        .alert { border-radius: 12px; font-weight: 500; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-    <div class="admin-card">
-        
-        <div class="brand-icon">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
+    <div class="container-card">
+        <div class="brand-header">
+            <i class="fa-solid fa-database"></i>
+            <h2 class="fw-bold m-0">Question Bank Manager</h2>
+            <p class="text-muted">Enterprise Content Portal</p>
         </div>
-        
-        <h2 class="page-title">Upload Question Bank</h2>
-        <p class="page-subtitle">Upload a CSV file to populate the question bank.</p>
-        
-        <!-- Alerts for Success/Error -->
+
         <% 
             String error = request.getParameter("error");
             String success = request.getParameter("success");
             if(error != null) { 
         %>
-            <div class="alert alert-danger py-2 px-3 text-sm" role="alert"><%= error %></div>
+            <div class="alert alert-danger py-2 px-3 mb-4"><i class="fas fa-times-circle me-2"></i><%= error %></div>
         <% } else if(success != null) { %>
-            <div class="alert alert-success py-2 px-3 text-sm" role="alert"><%= success %></div>
+            <div class="alert alert-success py-2 px-3 mb-4"><i class="fas fa-check-circle me-2"></i><%= success %></div>
         <% } %>
 
-        <!-- MODIFIED: Submits to UploadCsvServlet with multipart/form-data -->
-        <form action="UploadCsvServlet" method="POST" enctype="multipart/form-data">
+        <form id="bulkForm" action="UploadCsvServlet" method="POST" enctype="multipart/form-data">
+            <div class="section-title"><i class="fas fa-file-csv"></i> 1. Bulk Upload (CSV)</div>
             
-            <div class="mb-3">
-                <label class="form-label" for="tech-select">Folder Category</label>
-                <!-- MODIFIED: Name updated to match UploadCsvServlet expectations -->
-                <select id="tech-select" name="category" class="premium-select" required>
-                    <option value="" disabled selected hidden>Select folder...</option>
-                    <option value="HTML">HTML5</option>
-                    <option value="CSS">CSS3</option>
-                    <option value="JavaScript">JavaScript</option>
-                    <option value="React">React JS</option>
-                    <option value="Java">Java Core</option>
-                    <option value="SQL">SQL / MySQL</option>
-                </select>
-            </div>
-
-            <!-- NEW: File Input for CSV -->
-            <div class="mb-3">
-                <label class="form-label" for="csv-file">CSV File</label>
-                <input type="file" id="csv-file" name="csvFile" class="premium-file" accept=".csv" required>
-                <div class="form-text" style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">
-                    Format: QuestionText, OptionA, OptionB, OptionC, OptionD, CorrectAnswer
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Category Type</label>
+                    <select id="bulk-type" name="questionType" class="form-select premium-select" required>
+                        <option value="" disabled selected>Select type...</option>
+                        <option value="Assessment">Assessment</option>
+                        <option value="Assignment">Assignment</option>
+                        <option value="Practice">Practice</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Target Folder</label>
+                    <select name="category" class="form-select premium-select" required>
+                        <option value="" disabled selected>Select technology...</option>
+                        <option value="JAVA">Java Core</option>
+                        <option value="HTML">HTML5</option>
+                        <option value="CSS">CSS3</option>
+                        <option value="JAVASCRIPT">JavaScript</option>
+                        <option value="PYTHON">Python</option>
+                    </select>
                 </div>
             </div>
 
-            <button type="submit" class="btn-primary-custom">
-                <i class="fa-solid fa-upload"></i> Upload CSV
-            </button>
-            
-            <div class="action-footer">
-                <a href="adminDashboard.jsp" class="link-cancel">
-                    Return to Dashboard
-                </a>
+            <div class="mb-4">
+                <label class="form-label">Choose CSV File</label>
+                <input type="file" name="csvFile" class="form-control" accept=".csv" required>
             </div>
 
+            <button type="submit" class="btn-cyan mb-4">
+                <i class="fas fa-cloud-upload-alt me-2"></i> Process Bulk Upload
+            </button>
         </form>
+
+        <hr style="opacity: 0.1; margin: 30px 0;">
+
+        <form id="manualForm" action="ManageQuestionServlet" method="POST">
+            <div class="section-title"><i class="fas fa-pen-to-square"></i> 2. Create Single Question</div>
+            
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <select id="manual-type" name="questionType" class="form-select premium-select" required>
+                        <option value="" disabled selected>Select Type...</option>
+                        <option value="Assessment">Assessment</option>
+                        <option value="Assignment">Assignment</option>
+                        <option value="Practice">Practice</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select name="category" class="form-select premium-select" required>
+                        <option value="" disabled selected>Select Folder...</option>
+                        <option value="JAVA">Java Core</option>
+                        <option value="HTML">HTML5</option>
+                        <option value="CSS">CSS3</option>
+                        <option value="JAVASCRIPT">JavaScript</option>
+                        <option value="PYTHON">Python</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <input type="text" name="questionText" class="form-control" placeholder="Enter full question text..." required>
+            </div>
+            
+            <div class="row g-2 mb-3">
+                <div class="col-6"><input type="text" name="optionA" class="form-control" placeholder="Option A" required></div>
+                <div class="col-6"><input type="text" name="optionB" class="form-control" placeholder="Option B" required></div>
+                <div class="col-6"><input type="text" name="optionC" class="form-control" placeholder="Option C" required></div>
+                <div class="col-6"><input type="text" name="optionD" class="form-control" placeholder="Option D" required></div>
+            </div>
+
+            <div class="mb-4">
+                <select name="correctOption" class="form-select premium-select" required>
+                    <option value="" disabled selected>Select Correct Answer...</option>
+                    <option value="A">A</option><option value="B">B</option>
+                    <option value="C">C</option><option value="D">D</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-cyan">
+                <i class="fas fa-save me-2"></i> Save Single Question
+            </button>
+        </form>
+
+        <hr style="opacity: 0.1; margin: 30px 0;">
+
+        <div class="section-title"><i class="fas fa-list-check"></i> 3. Inventory Management</div>
+        <div class="row g-3">
+            <div class="col-12">
+                <a href="adminViewQuestions.jsp" class="btn-outline-cyan">
+                    <i class="fas fa-eye me-2"></i> View & Edit All Questions
+                </a>
+            </div>
+            <div class="col-12 text-center mt-3">
+                <a href="adminDashboard.jsp" class="text-decoration-none text-muted small fw-bold">
+                    <i class="fas fa-arrow-left me-1"></i> Return to Main Dashboard
+                </a>
+            </div>
+        </div>
     </div>
 
+    <script>
+        // 1. Bulk Upload Confirmation
+        document.getElementById("bulkForm").addEventListener("submit", function(e) {
+            const type = document.getElementById("bulk-type").value;
+            const message = "Are you sure you want to create this " + type + " via bulk upload?";
+            if(!confirm(message)) {
+                e.preventDefault();
+            }
+        });
+
+        // 2. Manual Creation Confirmation
+        document.getElementById("manualForm").addEventListener("submit", function(e) {
+            const type = document.getElementById("manual-type").value;
+            const message = "Are you sure you want to create this " + type + " manually?";
+            if(!confirm(message)) {
+                e.preventDefault();
+            }
+        });
+    </script>
 </body>
 </html>

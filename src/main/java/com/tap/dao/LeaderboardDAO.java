@@ -1,52 +1,41 @@
 package com.tap.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.project.DBConnection; // Assuming this is your connection utility based on your screenshot
-import com.tap.model.LeaderboardEntry;
+import java.sql.*;
+import java.util.*;
+import com.project.DBConnection;
+import com.tap.model.LeaderboardUser;
 
 public class LeaderboardDAO {
 
-    public List<LeaderboardEntry> getTopStudents() {
-        List<LeaderboardEntry> leaderboard = new ArrayList<>();
-        
-        // TODO: Change 'users', 'results', and their column names to match your exact MySQL tables!
-        String query = "SELECT u.name AS studentName, IFNULL(SUM(s.marks_scored), 0) AS totalScore " +
-                "FROM users u " +
-                "LEFT JOIN student_scores s ON u.id = s.student_id " +
-                "WHERE u.role = 'student' " +  // <-- THIS REMOVES THE ADMIN
-                "GROUP BY u.id " +
-                "ORDER BY totalScore DESC " +
-                "LIMIT 6";
+    public List<LeaderboardUser> getTopRankings() {
+        List<LeaderboardUser> list = new ArrayList<>();
+        // This query sums up the weighted progress across all modules per student
+        String sql = "SELECT u.name, " +
+                     "SUM((p.course_read * 50) + (p.assessment_done * 25) + (p.assignment_done * 25)) as total_score " +
+                     "FROM users u " +
+                     "LEFT JOIN student_module_progress p ON u.id = p.user_id " +
+                     "WHERE u.role = 'student' " +
+                     "GROUP BY u.id, u.name " +
+                     "ORDER BY total_score DESC";
 
-        try (Connection conn = DBConnection.getConnection(); // Use your existing DBConnection class
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-            int currentRank = 1;
-
+            int rank = 1;
             while (rs.next()) {
-                String name = rs.getString("studentName");
-                int score = rs.getInt("totalScore");
-                
-                LeaderboardEntry entry = new LeaderboardEntry(currentRank, name, score);
-                leaderboard.add(entry);
-                
-                currentRank++; // Increment rank for the next student
+                list.add(new LeaderboardUser(
+                    rank++, 
+                    rs.getString("name"), 
+                    rs.getInt("total_score")
+                ));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
-        return leaderboard;
+        return list;
     }
 }

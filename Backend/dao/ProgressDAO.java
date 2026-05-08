@@ -9,57 +9,79 @@ import com.tap.model.StudentProgress;
 
 public class ProgressDAO {
 
-    public StudentProgress getStudentProgress(int studentId) {
-        StudentProgress progress = new StudentProgress();
-        int totalTests = 0;
-        int completedTests = 0;
-
-        // Query 1: Get Total Number of Assessments Available
-        // TODO: Update table name 'assessments' if yours is different
-        String totalQuery = "SELECT COUNT(*) AS total FROM assessments";
+    /**
+     * Fetches the progress status for a specific student and module.
+     * status[0] = Course Read, status[1] = Assessment Done, status[2] = Assignment Done
+     */
+    public int[] getModuleStatus(int userId, String module) {
+        int[] status = {0, 0, 0}; 
+        String sql = "SELECT course_read, assessment_done, assignment_done FROM student_module_progress WHERE user_id=? AND module=?";
         
-        // Query 2: Get Number of Assessments Completed by this Student
-        // TODO: Update table name 'results' and column 'student_id' if yours are different
-        String completedQuery = "SELECT COUNT(*) AS completed FROM results WHERE student_id = ?";
-
-        try (Connection conn = DBConnection.getConnection()) {
+        try (Connection con = DBConnection.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, module);
+            ResultSet rs = ps.executeQuery();
             
-            // Execute Total Query
-            try (PreparedStatement pstmt1 = conn.prepareStatement(totalQuery);
-                 ResultSet rs1 = pstmt1.executeQuery()) {
-                if (rs1.next()) {
-                    totalTests = rs1.getInt("total");
+            if(rs.next()) {
+                status[0] = rs.getInt("course_read");
+                status[1] = rs.getInt("assessment_done");
+                status[2] = rs.getInt("assignment_done");
+            }
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
+        return status;
+    }
+
+    /**
+     * Updates progress for a specific student. 
+     * If no record exists for this module, it automatically creates one (UPSERT logic).
+     */
+    public void updateProgress(int userId, String module, String column, int val) {
+        // First try to update existing record
+        String updateSql = "UPDATE student_module_progress SET " + column + "=? WHERE user_id=? AND module=?";
+        
+        try (Connection con = DBConnection.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(updateSql)) {
+            ps.setInt(1, val);
+            ps.setInt(2, userId);
+            ps.setString(3, module);
+            
+            int rowsAffected = ps.executeUpdate();
+            
+            // If the student doesn't have a record for this module yet, insert it
+            if (rowsAffected == 0) {
+                String insertSql = "INSERT INTO student_module_progress (user_id, module, " + column + ") VALUES (?, ?, ?)";
+                try (PreparedStatement psInsert = con.prepareStatement(insertSql)) {
+                    psInsert.setInt(1, userId);
+                    psInsert.setString(2, module);
+                    psInsert.setInt(3, val);
+                    psInsert.executeUpdate();
                 }
             }
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
+    }
+    
+    /**
+     * Resets all progress for a specific module to 0.
+     */
+    public void resetProgress(int userId, String module) {
+        String sql = "UPDATE student_module_progress SET course_read=0, assessment_done=0, assignment_done=0 WHERE user_id=? AND module=?";
+        try (Connection con = DBConnection.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, module);
+            ps.executeUpdate();
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
+    }
 
-            // Execute Completed Query
-            try (PreparedStatement pstmt2 = conn.prepareStatement(completedQuery)) {
-                pstmt2.setInt(1, studentId);
-                try (ResultSet rs2 = pstmt2.executeQuery()) {
-                    if (rs2.next()) {
-                        completedTests = rs2.getInt("completed");
-                    }
-                }
-            }
-
-            // Calculate percentage
-            int percentage = 0;
-            if (totalTests > 0) {
-                percentage = (int) (((double) completedTests / totalTests) * 100);
-            }
-
-            // Set data into the model (You need to create the StudentProgress.java POJO if you haven't)
-            progress.setTotalTasks(totalTests);
-            progress.setCompletedTasks(completedTests);
-            progress.setPercentage(percentage);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-        return progress;
+    public StudentProgress getStudentProgress(int studentId) {
+        // Placeholder for future implementation if needed
+        return null;
     }
 }

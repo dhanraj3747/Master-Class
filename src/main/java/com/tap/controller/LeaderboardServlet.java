@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tap.dao.LeaderboardDAO;
-import com.tap.model.LeaderboardEntry;
+import com.tap.model.LeaderboardUser;
 
 @WebServlet("/LeaderboardServlet")
 public class LeaderboardServlet extends HttpServlet {
@@ -22,18 +22,18 @@ public class LeaderboardServlet extends HttpServlet {
         // 1. Instantiate the DAO
         LeaderboardDAO leaderboardDAO = new LeaderboardDAO();
         
-        // 2. Fetch the top 6 students (since you mentioned having 6 students)
-        List<LeaderboardEntry> topStudents = leaderboardDAO.getTopStudents();
+        // 2. THE FIX: Changed getTopStudents() to getTopRankings()
+        // Make sure this matches the method name inside your LeaderboardDAO.java
+        List<LeaderboardUser> topStudents = leaderboardDAO.getTopRankings();
         
-        // 3. Attach the list to the request object so the JSP can access it
+        // 3. Attach the list to the request object
         request.setAttribute("topStudents", topStudents);
         
-        // 4. Forward the request to your minimalist leaderboard.jsp
+        // 4. Forward the request to your leaderboard.jsp
         RequestDispatcher dispatcher = request.getRequestDispatcher("leaderboard.jsp");
         dispatcher.forward(request, response);
     }
     
-    // Route POST requests to GET just in case
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
